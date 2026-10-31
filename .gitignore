@@ -1,0 +1,14 @@
+out/
+bin/
+*.class
+
+.DS_Store
+Thumbs.db
+
+# IDE / editor files
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
