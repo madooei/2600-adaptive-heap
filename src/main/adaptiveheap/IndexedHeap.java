@@ -34,9 +34,8 @@ public class IndexedHeap<T extends Comparable<T>> implements AdaptivePriorityQue
 
   @SuppressWarnings("unchecked")
   public IndexedHeap() {
-    heap = (Entry<T>[]) new Entry[10];
-    index = new TreeMap<>();
-    size = 0;
+    // TODO: Implement me
+    throw new UnsupportedOperationException("TODO: Implement me");
   }
 
   @Override
@@ -46,71 +45,39 @@ public class IndexedHeap<T extends Comparable<T>> implements AdaptivePriorityQue
 
   @Override
   public T peek() {
-    if (size == 0) {
-      throw new NoSuchElementException();
-    }
-    return heap[0].item;  // the highest-priority item is always at the root
+    // TODO: Implement me
+    throw new UnsupportedOperationException("TODO: Implement me");
   }
 
   @Override
   public void add(T item, int priority) {
-    if (item == null || index.containsKey(item)) {
-      throw new IllegalArgumentException();
-    }
-    if (size == heap.length) {
-      grow();
-    }
-    heap[size] = new Entry<>(item, priority);  // the next open slot
-    index.put(item, size);                     // record where it sits
-    size++;
-    swim(size - 1);
+    // TODO: Implement me
+    throw new UnsupportedOperationException("TODO: Implement me");
   }
 
   @Override
   public void remove() {
-    if (size == 0) {
-      throw new NoSuchElementException();
-    }
-    index.remove(heap[0].item);  // the root item is leaving
-    heap[0] = heap[size - 1];    // move the last entry into the root
-    heap[size - 1] = null;       // clear the vacated slot
-    size--;
-    if (size > 0) {
-      index.put(heap[0].item, 0);  // the moved item now sits at the root
-      sink(0);
-    }
+    // TODO: Implement me
+    throw new UnsupportedOperationException("TODO: Implement me");
   }
 
   @Override
   public boolean contains(T item) {
-    if (item == null) {
-      throw new IllegalArgumentException();
-    }
-    return index.containsKey(item);
+    // TODO: Implement me
+    throw new UnsupportedOperationException("TODO: Implement me");
   }
 
   @Override
   public void changePriority(T item, int priority) {
-    if (item == null) {
-      throw new IllegalArgumentException();
-    }
-    Integer i = index.get(item);  // where the item sits, or null if absent
-    if (i == null) {
-      throw new NoSuchElementException();
-    }
-    int old = heap[i].priority;
-    heap[i].priority = priority;
-    if (priority < old) {
-      swim(i);  // higher priority now: move up
-    } else if (priority > old) {
-      sink(i);  // lower priority now: move down
-    }
+    // TODO: Implement me
+    throw new UnsupportedOperationException("TODO: Implement me");
   }
 
   // Returns a negative number if a has higher priority than b, zero if they
   // tie, and a positive number if a has lower priority.
   private int compare(Entry<T> a, Entry<T> b) {
-    return Integer.compare(a.priority, b.priority);
+    // TODO: Implement me
+    throw new UnsupportedOperationException("TODO: Implement me");
   }
 
   // The parent of the node at index i. Pre: i > 0.
@@ -131,11 +98,8 @@ public class IndexedHeap<T extends Comparable<T>> implements AdaptivePriorityQue
   // Exchanges the entries at indices i and j, and records their new slots in
   // the index map.
   private void swap(int i, int j) {
-    Entry<T> temp = heap[i];
-    heap[i] = heap[j];
-    heap[j] = temp;
-    index.put(heap[i].item, i);  // the item now at i sits at i
-    index.put(heap[j].item, j);  // the item now at j sits at j
+    // TODO: Implement me
+    throw new UnsupportedOperationException("TODO: Implement me");
   }
 
   // Moves the entry at index i up until it does not outrank its parent.
