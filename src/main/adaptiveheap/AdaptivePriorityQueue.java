@@ -3,11 +3,10 @@ package adaptiveheap;
 import java.util.NoSuchElementException;
 
 /**
- * An AdaptivePriorityQueue serves items in priority order, where a smaller
- * priority means higher priority, and lets an item's priority be changed after
- * it is added. Priorities are compared by their natural ordering. The items
- * must be distinct: the queue holds no two equal items, so an item always
- * refers to exactly one element.
+ * An AdaptivePriorityQueue serves the item with the smallest priority first,
+ * and lets an item's priority be changed after it is added. Priorities are
+ * compared by their natural ordering. The items must be distinct: the queue
+ * holds no two equal items, so an item always refers to exactly one element.
  *
  * @param <T> the type of items in this priority queue
  * @param <P> the type of priorities
@@ -16,7 +15,7 @@ public interface AdaptivePriorityQueue<T, P extends Comparable<P>> {
   /**
    * Adds an item to this priority queue with the given priority.
    * @param item the item to add
-   * @param priority the item's priority; a smaller priority is higher priority
+   * @param priority the item's priority; the smallest priority is served first
    * @throws IllegalArgumentException if the item or the priority is null, or if
    *     the item is already in this priority queue
    */
@@ -40,7 +39,7 @@ public interface AdaptivePriorityQueue<T, P extends Comparable<P>> {
    * Changes the priority of an item already in this priority queue, moving it to
    * its new place in the order.
    * @param item the item whose priority to change
-   * @param priority the new priority; a smaller priority is higher priority
+   * @param priority the new priority; the smallest priority is served first
    * @throws IllegalArgumentException if the item or the priority is null
    * @throws NoSuchElementException if the item is not in this priority queue
    */
