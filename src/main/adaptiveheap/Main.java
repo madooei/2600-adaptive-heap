@@ -1,25 +1,29 @@
 package adaptiveheap;
 
 /**
- * Runs the chapter's trace: four patients are added, one of them becomes more
- * urgent while waiting, and the most urgent patient is seen.
+ * Runs the chapter's trace: five patients are added, a more urgent patient
+ * arrives and is seen, and one patient's condition improves while waiting.
  */
 public class Main {
 
   public static void main(String[] args) {
-    AdaptivePriorityQueue<String, Integer> er = new IndexedHeap<>();
-    er.add("Amy", 5);
-    er.add("Bob", 8);
-    er.add("Cal", 3);
-    er.add("Dan", 6);
-    System.out.println("Next patient: " + er.peek());  // Cal, at level 3
+    AdaptivePriorityQueue<String, Integer> er = new IndexedArrayHeap<>();
+    er.add("Amy", 1);
+    er.add("Bob", 2);
+    er.add("Cal", 4);
+    er.add("Dan", 5);
+    er.add("Eve", 3);
+    System.out.println("Next patient: " + er.peek());  // Amy, at level 1
 
-    er.changePriority("Bob", 2);  // Bob gets worse while he waits
-    System.out.println("Next patient: " + er.peek());  // Bob, now at level 2
+    er.add("Fox", 0);
+    System.out.println("Next patient: " + er.peek());  // Fox, at level 0
 
-    er.remove();  // Bob is seen
-    System.out.println("Is Bob still waiting? " + er.contains("Bob"));
-    System.out.println("Next patient: " + er.peek());  // Cal again
+    er.remove();  // Fox is seen
+    System.out.println("Is Fox still waiting? " + er.contains("Fox"));
+    System.out.println("Next patient: " + er.peek());  // Amy again
+
+    er.changePriority("Amy", 6);  // Amy's condition improves
+    System.out.println("Next patient: " + er.peek());  // Bob, at level 2
     System.out.println("Patients waiting: " + er.size());
   }
 }

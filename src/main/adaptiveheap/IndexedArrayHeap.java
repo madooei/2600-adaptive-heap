@@ -16,7 +16,7 @@ import map.TreeMap;
  * @param <T> the type of items in this priority queue
  * @param <P> the type of priorities
  */
-public class IndexedHeap<T extends Comparable<T>, P extends Comparable<P>>
+public class IndexedArrayHeap<T extends Comparable<T>, P extends Comparable<P>>
     implements AdaptivePriorityQueue<T, P> {
 
   // An item together with its priority.
@@ -35,7 +35,7 @@ public class IndexedHeap<T extends Comparable<T>, P extends Comparable<P>>
   private int size;
 
   @SuppressWarnings("unchecked")
-  public IndexedHeap() {
+  public IndexedArrayHeap() {
     heap = (Entry<T, P>[]) new Entry[10];
     index = new TreeMap<>();
     size = 0;
