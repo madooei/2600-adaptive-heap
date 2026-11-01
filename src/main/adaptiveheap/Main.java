@@ -7,7 +7,7 @@ package adaptiveheap;
 public class Main {
 
   public static void main(String[] args) {
-    AdaptivePriorityQueue<String> er = new IndexedHeap<>();
+    AdaptivePriorityQueue<String, Integer> er = new IndexedHeap<>();
     er.add("Amy", 5);
     er.add("Bob", 8);
     er.add("Cal", 3);

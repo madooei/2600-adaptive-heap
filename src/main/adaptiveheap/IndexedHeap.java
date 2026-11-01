@@ -10,31 +10,33 @@ import map.TreeMap;
  * occupies.
  *
  * <p>The item type is Comparable only because the index map is a TreeMap, which
- * keeps its keys in order. The heap itself orders the entries by their int
+ * keeps its keys in order. The heap itself orders the entries by their
  * priorities.
  *
  * @param <T> the type of items in this priority queue
+ * @param <P> the type of priorities
  */
-public class IndexedHeap<T extends Comparable<T>> implements AdaptivePriorityQueue<T> {
+public class IndexedHeap<T extends Comparable<T>, P extends Comparable<P>>
+    implements AdaptivePriorityQueue<T, P> {
 
   // An item together with its priority.
-  private static final class Entry<T> {
+  private static final class Entry<T, P> {
     T item;
-    int priority;
+    P priority;
 
-    Entry(T item, int priority) {
+    Entry(T item, P priority) {
       this.item = item;
       this.priority = priority;
     }
   }
 
-  private Entry<T>[] heap;        // the complete tree, stored in level order
+  private Entry<T, P>[] heap;     // the complete tree, stored in level order
   private Map<T, Integer> index;  // each item to the slot it occupies
   private int size;
 
   @SuppressWarnings("unchecked")
   public IndexedHeap() {
-    heap = (Entry<T>[]) new Entry[10];
+    heap = (Entry<T, P>[]) new Entry[10];
     index = new TreeMap<>();
     size = 0;
   }
@@ -53,8 +55,8 @@ public class IndexedHeap<T extends Comparable<T>> implements AdaptivePriorityQue
   }
 
   @Override
-  public void add(T item, int priority) {
-    if (item == null || index.containsKey(item)) {
+  public void add(T item, P priority) {
+    if (item == null || priority == null || index.containsKey(item)) {
       throw new IllegalArgumentException();
     }
     if (size == heap.length) {
@@ -90,27 +92,27 @@ public class IndexedHeap<T extends Comparable<T>> implements AdaptivePriorityQue
   }
 
   @Override
-  public void changePriority(T item, int priority) {
-    if (item == null) {
+  public void changePriority(T item, P priority) {
+    if (item == null || priority == null) {
       throw new IllegalArgumentException();
     }
     Integer i = index.get(item);  // where the item sits, or null if absent
     if (i == null) {
       throw new NoSuchElementException();
     }
-    int old = heap[i].priority;
+    P old = heap[i].priority;
     heap[i].priority = priority;
-    if (priority < old) {
+    if (priority.compareTo(old) < 0) {
       swim(i);  // higher priority now: move up
-    } else if (priority > old) {
+    } else if (priority.compareTo(old) > 0) {
       sink(i);  // lower priority now: move down
     }
   }
 
   // Returns a negative number if a has higher priority than b, zero if they
   // tie, and a positive number if a has lower priority.
-  private int compare(Entry<T> a, Entry<T> b) {
-    return Integer.compare(a.priority, b.priority);
+  private int compare(Entry<T, P> a, Entry<T, P> b) {
+    return a.priority.compareTo(b.priority);
   }
 
   // The parent of the node at index i. Pre: i > 0.
@@ -131,7 +133,7 @@ public class IndexedHeap<T extends Comparable<T>> implements AdaptivePriorityQue
   // Exchanges the entries at indices i and j, and records their new slots in
   // the index map.
   private void swap(int i, int j) {
-    Entry<T> temp = heap[i];
+    Entry<T, P> temp = heap[i];
     heap[i] = heap[j];
     heap[j] = temp;
     index.put(heap[i].item, i);  // the item now at i sits at i
@@ -165,7 +167,7 @@ public class IndexedHeap<T extends Comparable<T>> implements AdaptivePriorityQue
   // Doubles the capacity.
   @SuppressWarnings("unchecked")
   private void grow() {
-    Entry<T>[] bigger = (Entry<T>[]) new Entry[heap.length * 2];
+    Entry<T, P>[] bigger = (Entry<T, P>[]) new Entry[heap.length * 2];
     for (int i = 0; i < size; i++) {
       bigger[i] = heap[i];
     }
