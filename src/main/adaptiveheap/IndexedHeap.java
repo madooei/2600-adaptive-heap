@@ -10,25 +10,27 @@ import map.TreeMap;
  * occupies.
  *
  * <p>The item type is Comparable only because the index map is a TreeMap, which
- * keeps its keys in order. The heap itself orders the entries by their int
+ * keeps its keys in order. The heap itself orders the entries by their
  * priorities.
  *
  * @param <T> the type of items in this priority queue
+ * @param <P> the type of priorities
  */
-public class IndexedHeap<T extends Comparable<T>> implements AdaptivePriorityQueue<T> {
+public class IndexedHeap<T extends Comparable<T>, P extends Comparable<P>>
+    implements AdaptivePriorityQueue<T, P> {
 
   // An item together with its priority.
-  private static final class Entry<T> {
+  private static final class Entry<T, P> {
     T item;
-    int priority;
+    P priority;
 
-    Entry(T item, int priority) {
+    Entry(T item, P priority) {
       this.item = item;
       this.priority = priority;
     }
   }
 
-  private Entry<T>[] heap;        // the complete tree, stored in level order
+  private Entry<T, P>[] heap;     // the complete tree, stored in level order
   private Map<T, Integer> index;  // each item to the slot it occupies
   private int size;
 
@@ -50,7 +52,7 @@ public class IndexedHeap<T extends Comparable<T>> implements AdaptivePriorityQue
   }
 
   @Override
-  public void add(T item, int priority) {
+  public void add(T item, P priority) {
     // TODO: Implement me
     throw new UnsupportedOperationException("TODO: Implement me");
   }
@@ -68,14 +70,14 @@ public class IndexedHeap<T extends Comparable<T>> implements AdaptivePriorityQue
   }
 
   @Override
-  public void changePriority(T item, int priority) {
+  public void changePriority(T item, P priority) {
     // TODO: Implement me
     throw new UnsupportedOperationException("TODO: Implement me");
   }
 
   // Returns a negative number if a has higher priority than b, zero if they
   // tie, and a positive number if a has lower priority.
-  private int compare(Entry<T> a, Entry<T> b) {
+  private int compare(Entry<T, P> a, Entry<T, P> b) {
     // TODO: Implement me
     throw new UnsupportedOperationException("TODO: Implement me");
   }
@@ -129,7 +131,7 @@ public class IndexedHeap<T extends Comparable<T>> implements AdaptivePriorityQue
   // Doubles the capacity.
   @SuppressWarnings("unchecked")
   private void grow() {
-    Entry<T>[] bigger = (Entry<T>[]) new Entry[heap.length * 2];
+    Entry<T, P>[] bigger = (Entry<T, P>[]) new Entry[heap.length * 2];
     for (int i = 0; i < size; i++) {
       bigger[i] = heap[i];
     }
