@@ -73,14 +73,11 @@ public class IndexedArrayHeap<T extends Comparable<T>, P extends Comparable<P>>
     if (size == 0) {
       throw new NoSuchElementException();
     }
-    index.remove(heap[0].item);  // the root item is leaving
-    heap[0] = heap[size - 1];    // move the last entry into the root
-    heap[size - 1] = null;       // clear the vacated slot
+    swap(0, size - 1);                  // the root item moves to the last slot
+    index.remove(heap[size - 1].item);  // the root item is leaving
+    heap[size - 1] = null;              // clear the vacated slot
     size--;
-    if (size > 0) {
-      index.put(heap[0].item, 0);  // the moved item now sits at the root
-      sink(0);
-    }
+    sink(0);
   }
 
   @Override
@@ -102,17 +99,17 @@ public class IndexedArrayHeap<T extends Comparable<T>, P extends Comparable<P>>
     }
     P old = heap[i].priority;
     heap[i].priority = priority;
-    if (priority.compareTo(old) < 0) {
+    if (compare(priority, old) < 0) {
       swim(i);  // higher priority now: move up
-    } else if (priority.compareTo(old) > 0) {
+    } else if (compare(priority, old) > 0) {
       sink(i);  // lower priority now: move down
     }
   }
 
-  // Returns a negative number if a has higher priority than b, zero if they
-  // tie, and a positive number if a has lower priority.
-  private int compare(Entry<T, P> a, Entry<T, P> b) {
-    return a.priority.compareTo(b.priority);
+  // Returns a negative number if priority a is served before b, zero if they
+  // tie, and a positive number if a is served after b.
+  private int compare(P a, P b) {
+    return a.compareTo(b);
   }
 
   // The parent of the node at index i. Pre: i > 0.
@@ -142,7 +139,7 @@ public class IndexedArrayHeap<T extends Comparable<T>, P extends Comparable<P>>
 
   // Moves the entry at index i up until it does not outrank its parent.
   private void swim(int i) {
-    while (i > 0 && compare(heap[i], heap[parent(i)]) < 0) {
+    while (i > 0 && compare(heap[i].priority, heap[parent(i)].priority) < 0) {
       swap(i, parent(i));
       i = parent(i);
     }
@@ -153,10 +150,10 @@ public class IndexedArrayHeap<T extends Comparable<T>, P extends Comparable<P>>
     while (leftChild(i) < size) {  // stop at a leaf
       int best = leftChild(i);
       int right = rightChild(i);
-      if (right < size && compare(heap[right], heap[best]) < 0) {
+      if (right < size && compare(heap[right].priority, heap[best].priority) < 0) {
         best = right;
       }
-      if (compare(heap[best], heap[i]) >= 0) {
+      if (compare(heap[best].priority, heap[i].priority) >= 0) {
         break;  // no child outranks the entry
       }
       swap(i, best);
