@@ -18,15 +18,6 @@ public class IndexedArrayHeapTest extends AdaptivePriorityQueueTest {
   }
 
   @Test
-  public void removeRecordsTheRootSlotOfAnItemThatDoesNotSink() {
-    IndexedArrayHeap<String, Integer> heap = new IndexedArrayHeap<>();
-    heap.add("Amy", 1);
-    heap.add("Bob", 2);
-    heap.remove();
-    assertIndexMapMatchesHeap(heap);
-  }
-
-  @Test
   public void fivePatientsFillTheSlotsInOrder() {
     IndexedArrayHeap<String, Integer> heap = fivePatients();
     assertSlots(heap, listOf("Amy", "Bob", "Cal", "Dan", "Eve"), 1, 2, 4, 5, 3);
@@ -49,6 +40,31 @@ public class IndexedArrayHeapTest extends AdaptivePriorityQueueTest {
   public void addRecordsTheNewSlotsInTheMap() {
     IndexedArrayHeap<String, Integer> heap = fivePatients();
     heap.add("Fox", 0);
+    assertIndexMapMatchesHeap(heap);
+  }
+
+  @Test
+  public void removeOnlyItemClearsTheRoot() {
+    IndexedArrayHeap<String, Integer> heap = new IndexedArrayHeap<>();
+    heap.add("Amy", 1);
+    heap.remove();
+    assertNull(entries(heap)[0]);
+  }
+
+  @Test
+  public void removeOnlyItemEmptiesTheMap() {
+    IndexedArrayHeap<String, Integer> heap = new IndexedArrayHeap<>();
+    heap.add("Amy", 1);
+    heap.remove();
+    assertEquals(0, indexMap(heap).size());
+  }
+
+  @Test
+  public void removeRecordsTheRootSlotOfAnItemThatDoesNotSink() {
+    IndexedArrayHeap<String, Integer> heap = new IndexedArrayHeap<>();
+    heap.add("Amy", 1);
+    heap.add("Bob", 2);
+    heap.remove();
     assertIndexMapMatchesHeap(heap);
   }
 
@@ -111,6 +127,16 @@ public class IndexedArrayHeapTest extends AdaptivePriorityQueueTest {
   }
 
   @Test
+  public void addToTheLastOpenSlotKeepsTheCapacity() {
+    IndexedArrayHeap<String, Integer> heap = new IndexedArrayHeap<>();
+    int capacity = entries(heap).length;
+    for (int i = 0; i < capacity; i++) {  // exactly what fits
+      heap.add("item" + i, i);
+    }
+    assertEquals(capacity, entries(heap).length);
+  }
+
+  @Test
   public void addToAFullArrayDoublesItsCapacity() {
     IndexedArrayHeap<String, Integer> heap = new IndexedArrayHeap<>();
     int capacity = entries(heap).length;
@@ -149,7 +175,7 @@ public class IndexedArrayHeapTest extends AdaptivePriorityQueueTest {
     assertEquals(sorted, served);
   }
 
-  // The five patients the notes start from: Amy 1, Bob 2, Cal 4, Dan 5, Eve 3.
+  // Amy 1, Bob 2, Cal 4, Dan 5, Eve 3, added in the order that needs no swaps.
   private static IndexedArrayHeap<String, Integer> fivePatients() {
     IndexedArrayHeap<String, Integer> heap = new IndexedArrayHeap<>();
     heap.add("Amy", 1);
