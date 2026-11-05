@@ -7,11 +7,7 @@ import map.TreeMap;
 /**
  * A binary heap implementation of the AdaptivePriorityQueue ADT, stored in an
  * array in level order, with an index map from each item to the slot it
- * occupies.
- *
- * <p>The item type is Comparable only because the index map is a TreeMap, which
- * keeps its keys in order. The heap itself orders the entries by their
- * priorities.
+ * occupies. The items are Comparable because the index map is a TreeMap.
  *
  * @param <T> the type of items in this priority queue
  * @param <P> the type of priorities
@@ -19,8 +15,12 @@ import map.TreeMap;
 public class IndexedArrayHeap<T extends Comparable<T>, P extends Comparable<P>>
     implements AdaptivePriorityQueue<T, P> {
 
+  private Entry<T, P>[] heap;     // the complete tree, stored in level order
+  private Map<T, Integer> index;  // each item to the slot it occupies
+  private int size;
+
   // An item together with its priority.
-  private static final class Entry<T, P> {
+  private static class Entry<T, P> {
     T item;
     P priority;
 
@@ -30,10 +30,6 @@ public class IndexedArrayHeap<T extends Comparable<T>, P extends Comparable<P>>
     }
   }
 
-  private Entry<T, P>[] heap;     // the complete tree, stored in level order
-  private Map<T, Integer> index;  // each item to the slot it occupies
-  private int size;
-
   @SuppressWarnings("unchecked")
   public IndexedArrayHeap() {
     // TODO: Implement me
@@ -42,7 +38,8 @@ public class IndexedArrayHeap<T extends Comparable<T>, P extends Comparable<P>>
 
   @Override
   public int size() {
-    return size;
+    // TODO: Implement me
+    throw new UnsupportedOperationException("TODO: Implement me");
   }
 
   @Override

@@ -44,8 +44,8 @@ code/
 
 ## What's here
 
-- `adaptiveheap.AdaptivePriorityQueue<T>` — the ADT: `add(item, priority)`, `peek`, `remove`, `changePriority`, `contains`, and `size`. A smaller priority number means a higher priority, and the items must be distinct.
-- `adaptiveheap.IndexedArrayHeap<T>` — the binary heap from the binary heap chapter, storing an entry (an item and its priority) in each slot, with a `TreeMap` from each item to its slot. `swap` keeps the map correct for `swim` and `sink`, and `add` and `remove` update it at their ends.
+- `adaptiveheap.AdaptivePriorityQueue<T, P>` — the ADT: `add(item, priority)`, `peek`, `remove`, `changePriority`, `contains`, and `size`. A smaller priority number means a higher priority, and the items must be distinct.
+- `adaptiveheap.IndexedArrayHeap<T, P>` — the binary heap from the binary heap chapter, storing an entry (an item and its priority) in each slot, with a `TreeMap` from each item to its slot. `swap` keeps the map correct for `swim` and `sink`, and `add` and `remove` update it at their ends.
 - `adaptiveheap.Main` — runs the chapter's trace: five adds, the add of `Fox` and its `remove`, and a `changePriority` that sends `Amy` down the heap.
 - `map.Map<K, V>`, `map.TreeMap<K, V>`, `stack.Stack<T>`, and `stack.LinkedStack<T>` — the map from the TreeMap chapter and the stack its iterator uses, copied unchanged so this code compiles and runs on its own.
 - `adaptiveheap.AdaptivePriorityQueueTest` — the abstract contract suite, written against the `AdaptivePriorityQueue` interface alone.

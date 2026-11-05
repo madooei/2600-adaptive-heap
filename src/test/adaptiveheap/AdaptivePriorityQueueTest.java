@@ -52,6 +52,40 @@ public abstract class AdaptivePriorityQueueTest {
   }
 
   @Test
+  public void containsOnEmptyQueueIsFalse() {
+    assertFalse(queue.contains("Amy"));
+  }
+
+  @Test
+  public void changePriorityOnEmptyQueueThrows() {
+    try {
+      queue.changePriority("Amy", 1);
+      fail("expected NoSuchElementException when changing a priority in an empty queue");
+    } catch (NoSuchElementException e) {
+      return;
+    }
+  }
+
+  @Test
+  public void addGrowsSize() {
+    queue.add("Amy", 5);
+    assertEquals(1, queue.size());
+  }
+
+  @Test
+  public void peekReturnsTheOnlyItem() {
+    queue.add("Amy", 5);
+    assertEquals("Amy", queue.peek());
+  }
+
+  @Test
+  public void peekKeepsTheSize() {
+    queue.add("Amy", 5);
+    queue.peek();
+    assertEquals(1, queue.size());
+  }
+
+  @Test
   public void containsFindsAnAddedItem() {
     queue.add("Amy", 5);
     assertTrue(queue.contains("Amy"));
@@ -61,6 +95,60 @@ public abstract class AdaptivePriorityQueueTest {
   public void containsIsFalseForAnAbsentItem() {
     queue.add("Amy", 5);
     assertFalse(queue.contains("Bob"));
+  }
+
+  @Test
+  public void removeOnlyItemLeavesTheQueueEmpty() {
+    queue.add("Amy", 5);
+    queue.remove();
+    assertEquals(0, queue.size());
+  }
+
+  @Test
+  public void addAcceptsAnItemThatWasRemoved() {
+    queue.add("Amy", 5);
+    queue.remove();
+    queue.add("Amy", 2);
+    assertTrue(queue.contains("Amy"));
+  }
+
+  @Test
+  public void sizeCountsTheAddedItems() {
+    queue.add("Amy", 5);
+    queue.add("Bob", 8);
+    queue.add("Cal", 3);
+    assertEquals(3, queue.size());
+  }
+
+  @Test
+  public void peekReturnsTheSmallestPriority() {
+    queue.add("Amy", 5);
+    queue.add("Bob", 8);
+    queue.add("Cal", 3);
+    assertEquals("Cal", queue.peek());
+  }
+
+  @Test
+  public void itemsMayShareAPriority() {
+    queue.add("Amy", 2);
+    queue.add("Bob", 2);
+    assertEquals(2, drain(queue).size());
+  }
+
+  @Test
+  public void removeShrinksTheSize() {
+    queue.add("Amy", 5);
+    queue.add("Bob", 8);
+    queue.remove();
+    assertEquals(1, queue.size());
+  }
+
+  @Test
+  public void removeRevealsTheNextItem() {
+    queue.add("Amy", 5);
+    queue.add("Bob", 8);
+    queue.remove();
+    assertEquals("Bob", queue.peek());
   }
 
   @Test
@@ -96,26 +184,20 @@ public abstract class AdaptivePriorityQueueTest {
   }
 
   @Test
-  public void itemsMayShareAPriority() {
-    queue.add("Amy", 2);
+  public void changePriorityKeepsTheSize() {
+    queue.add("Amy", 5);
+    queue.add("Bob", 8);
+    queue.changePriority("Amy", 9);
+    assertEquals(2, queue.size());
+  }
+
+  @Test
+  public void increaseKeyMovesTheItemBack() {
+    queue.add("Amy", 1);
     queue.add("Bob", 2);
-    assertEquals(2, drain(queue).size());
-  }
-
-  @Test
-  public void peekReturnsTheSmallestPriority() {
-    queue.add("Amy", 5);
-    queue.add("Bob", 8);
     queue.add("Cal", 3);
-    assertEquals("Cal", queue.peek());
-  }
-
-  @Test
-  public void sizeCountsTheAddedItems() {
-    queue.add("Amy", 5);
-    queue.add("Bob", 8);
-    queue.add("Cal", 3);
-    assertEquals(3, queue.size());
+    queue.changePriority("Amy", 9);
+    assertEquals(listOf("Bob", "Cal", "Amy"), drain(queue));
   }
 
   @Test
@@ -129,12 +211,13 @@ public abstract class AdaptivePriorityQueueTest {
   }
 
   @Test
-  public void increaseKeyMovesTheItemBack() {
-    queue.add("Amy", 1);
-    queue.add("Bob", 2);
-    queue.add("Cal", 3);
-    queue.changePriority("Amy", 9);
-    assertEquals(listOf("Bob", "Cal", "Amy"), drain(queue));
+  public void addPastInitialCapacityServesInPriorityOrder() {
+    List<String> expected = new ArrayList<>();
+    for (int i = 30; i > 0; i--) {  // far more than any starting capacity
+      queue.add("item" + i, i);
+      expected.add(0, "item" + i);
+    }
+    assertEquals(expected, drain(queue));
   }
 
   @Test
@@ -174,9 +257,21 @@ public abstract class AdaptivePriorityQueueTest {
     try {
       queue.add("Amy", 2);
     } catch (IllegalArgumentException e) {
-      // expected
+      // expected; the test checks the size below
     }
     assertEquals(1, queue.size());
+  }
+
+  @Test
+  public void addDuplicateKeepsThePriority() {
+    queue.add("Amy", 5);
+    queue.add("Bob", 3);
+    try {
+      queue.add("Amy", 2);
+    } catch (IllegalArgumentException e) {
+      // expected; the test checks the order below
+    }
+    assertEquals("Bob", queue.peek());
   }
 
   @Test
@@ -206,6 +301,18 @@ public abstract class AdaptivePriorityQueueTest {
     try {
       queue.changePriority("Bob", 1);
       fail("expected NoSuchElementException when the item is not in the queue");
+    } catch (NoSuchElementException e) {
+      return;
+    }
+  }
+
+  @Test
+  public void changePriorityOfARemovedItemThrows() {
+    queue.add("Amy", 5);
+    queue.remove();
+    try {
+      queue.changePriority("Amy", 1);
+      fail("expected NoSuchElementException when the item was removed");
     } catch (NoSuchElementException e) {
       return;
     }
