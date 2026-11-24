@@ -43,7 +43,7 @@ code/
 - `scripts/test.sh adaptiveheap.IndexedArrayHeapTest` — compiles everything and runs only that test class.
 - `scripts/run.sh demo.IndexedArrayHeapDemo` — compiles everything and runs that one demo. Every class you implement has its own demo.
 
-## What's here
+## Contents
 
 - `adaptiveheap.AdaptivePriorityQueue<T, P>` — the ADT: `add(item, priority)`, `peek`, `remove`, `changePriority`, `contains`, and `size`. A smaller priority number means a higher priority, and the items must be distinct.
 - `adaptiveheap.IndexedArrayHeap<T, P>` — the binary heap from the binary heap chapter, storing an entry (an item and its priority) in each slot, with a `TreeMap` from each item to its slot. `swap` keeps the map correct for `swim` and `sink`, and `add` and `remove` update it at their ends.
