@@ -20,19 +20,20 @@ code/
       adaptiveheap/
         AdaptivePriorityQueue.java      # the AdaptivePriorityQueue ADT
         IndexedArrayHeap.java           # a binary heap with an index map
-        Main.java                       # demo entry point (the chapter's trace)
       map/
         Map.java                        # the Map ADT
         TreeMap.java                    # the AVL tree map from the TreeMap chapter
       stack/
         Stack.java                      # the Stack ADT, used by the map's iterator
         LinkedStack.java                # linked implementation of Stack
+      demo/
+        IndexedArrayHeapDemo.java       # the chapter's trace
     test/
       adaptiveheap/
         AdaptivePriorityQueueTest.java  # the AdaptivePriorityQueue contract
         IndexedArrayHeapTest.java       # the contract, plus the heap and map by reflection
   scripts/
-    run.sh                              # compile and run the demo (adaptiveheap.Main)
+    run.sh                              # compile and run one demo
     test.sh                             # compile and run the JUnit tests
 ```
 
@@ -40,13 +41,13 @@ code/
 
 - `scripts/test.sh` — compiles everything and runs the full JUnit suite.
 - `scripts/test.sh adaptiveheap.IndexedArrayHeapTest` — compiles everything and runs only that test class.
-- `scripts/run.sh` — compiles everything and runs the `Main` demo.
+- `scripts/run.sh demo.IndexedArrayHeapDemo` — compiles everything and runs that one demo. Every class you implement has its own demo.
 
 ## What's here
 
 - `adaptiveheap.AdaptivePriorityQueue<T, P>` — the ADT: `add(item, priority)`, `peek`, `remove`, `changePriority`, `contains`, and `size`. A smaller priority number means a higher priority, and the items must be distinct.
 - `adaptiveheap.IndexedArrayHeap<T, P>` — the binary heap from the binary heap chapter, storing an entry (an item and its priority) in each slot, with a `TreeMap` from each item to its slot. `swap` keeps the map correct for `swim` and `sink`, and `add` and `remove` update it at their ends.
-- `adaptiveheap.Main` — runs the chapter's trace: five adds, the add of `Fox` and its `remove`, and a `changePriority` that sends `Amy` down the heap.
+- `demo.IndexedArrayHeapDemo` — runs the chapter's trace: five adds, the add of `Fox` and its `remove`, and a `changePriority` that sends `Amy` down the heap.
 - `map.Map<K, V>`, `map.TreeMap<K, V>`, `stack.Stack<T>`, and `stack.LinkedStack<T>` — the map from the TreeMap chapter and the stack its iterator uses, copied unchanged so this code compiles and runs on its own.
 - `adaptiveheap.AdaptivePriorityQueueTest` — the abstract contract suite, written against the `AdaptivePriorityQueue` interface alone.
 - `adaptiveheap.IndexedArrayHeapTest` — runs the contract suite against `IndexedArrayHeap`, then checks the slots the notes draw and the index map by reading them through reflection.
