@@ -72,9 +72,9 @@ public class IndexedArrayHeap<T extends Comparable<T>, P extends Comparable<P>>
     throw new UnsupportedOperationException("TODO: Implement me");
   }
 
-  // Returns a negative number if priority a is served before b, zero if they
-  // tie, and a positive number if a is served after b.
-  private int compare(P a, P b) {
+  // Returns a negative number if priority first is served before second, zero
+  // if they tie, and a positive number if first is served after second.
+  private int compare(P first, P second) {
     // TODO: Implement me
     throw new UnsupportedOperationException("TODO: Implement me");
   }
